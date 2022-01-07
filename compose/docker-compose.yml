@@ -1,0 +1,41 @@
+version: "3"
+services:
+      mysql:
+        image: mysql:5.7
+        container_name: mysql
+        volumes:
+         - ./data/db:/var/lib/mysql
+        restart: always
+        ports:
+         - "3308:3308"
+      mongodb:
+        container_name: mongodb
+        image: mongo
+        restart: always
+        ports:
+         - "27017:27017"
+        volumes:
+         - /home/${USER}/mongo/data/db:/data/db
+      node:
+        container_name: nodeapp
+        image: node:8
+        restart: always
+        ports:
+         - "8081:8081"
+        volumes:
+         - ./:/home/node/app
+        links:
+         - mysql
+         - mongodb
+         - redis
+      redis:
+        container_name: redis
+        image: redis
+        restart: always
+        ports:
+         - "6379:6379"
+        volumes:
+         - /home/redis-data:/data
+    
+
+
